@@ -1,0 +1,1 @@
+Entity_AddWargear(playerEnt, "wargear\\wargear\\multiplayer\\wargear_new\\new_wargear_29")

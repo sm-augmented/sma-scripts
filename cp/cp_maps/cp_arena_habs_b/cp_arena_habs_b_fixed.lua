@@ -1,0 +1,1376 @@
+require("Util/Common")
+require("Util/Scarutil")
+require("Util/CP/CP_Common")
+require("Util/CP/CP_AutomatedTurrets")
+require("CP/cp_maps/cp_arena_habs_b/cp_arena_habs_b_o")
+require("Util/CP/CP_Func")
+
+local MissionStartNetworkOriginal = MissionStartNetwork
+function MissionStartNetwork()
+  MissionStartNetworkOriginal()
+  InitLuaSafe()
+end
+
+local MissionStartOriginal = MissionStart
+function MissionStart()
+  MissionStartOriginal()
+  RegisterPlayerEvents()
+end
+
+-- multiplayer.objectiveData = {}
+-- arenaNum = 3.0
+-- thisArena = "cp_arena_habs_b"
+-- arenaExit = "mkr_habs_b_exit"
+-- nextArena = "cp_arena_habs_c"
+-- nextArenaEnter = "mkr_habs_c_entrance"
+
+-- multiplayer.assets.weirdboyTable = {}
+-- multiplayer.assets.weirdboyDeathTable = {}
+
+-- function MissionStartNetwork() --f_0
+-- 	InitLuaSafe()
+	
+-- 	sp_pipe = COOP_GetSpawnPointGroup("sp_pipe")
+-- 	sp_pipe_upper = {sp_pipe_01,
+-- sp_pipe_02,
+-- sp_pipe_03,
+-- sp_pipe_07}
+-- 	sp_pipe_lower = {sp_pipe_04,
+-- sp_pipe_05,
+-- sp_pipe_06,
+-- sp_pipe_08}
+-- 	sp_ground = COOP_GetSpawnPointGroup("sp_ground")
+-- 	sp_ledge = COOP_GetSpawnPointGroup("sp_ledge")
+-- 	challengeSet1 = {{["challengeType"] = ch_speedKill,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 12.0},
+-- {["challengeType"] = ch_selectiveKill,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 10.0,
+-- ["unitType"] = cp_ork_boy_melee},
+-- {["challengeType"] = ch_ballHog,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 8.0},
+-- {["challengeType"] = ch_sychronizedKill,
+-- ["timeLimit"] = 15.0,
+-- ["targetAmount"] = 8.0}}
+-- 	--sp_wave1_02 = 6.0
+-- 	--sp_wave1_02 = 1.0
+-- 	--sp_pipe_02 = 1.0
+-- 	--sp_pipe_01 = 2.0
+-- 	--challengeSet1 = 1.0
+-- 	--sp_pipe_upper = 6.0
+-- 	wave1 = {
+-- networkFunctions.WeirdboyFirstActSpawnIn,
+-- {["unitAmount"] = 1.0},
+-- 4.0,
+-- {["ebp"] = cp_ork_gretchin,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_gretchin,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_03,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_02,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 6.0,
+-- {["ebp"] = cp_ork_gretchin,
+-- ["unitAmount"] = 10.0,
+-- ["spawnPoints"] = sp_wave1_05,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_04,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_02,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 1.0,
+-- networkFunctions.ShowWayRight02,
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["aware"] = true},
+-- 1.0,
+-- networkFunctions.StopShowWayRight02,
+-- {["leftAlive"] = 5.0},
+-- networkFunctions.ShowWayRight,
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["aware"] = true},
+-- 2.0,
+-- networkFunctions.StopShowWayRight02,
+-- 1.0,
+-- networkFunctions.ShowWayBackLeft,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 10.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- {["challenge"] = challengeSet1,
+-- ["bonusPoints"] = 2500.0},
+-- 1.0,
+-- networkFunctions.StopShowWayBackLeft,
+-- {["leftAlive"] = 18.0},
+-- {["ebp"] = cp_ork_gretchin,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_gretchin,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["leftAlive"] = 15.0},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_upper,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_upper,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_upper,
+-- ["aware"] = true},
+-- 6.0,
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_wave1_03,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true}}
+-- 	--sp_pipe_02 = 5.0
+-- 	--sp_pipe_upper = 3.0
+-- 	--sp_pipe_lower = 3.0
+-- 	--sp_pipe = 6.0
+-- 	--sp_pipe = 8.0
+-- 	--sp_pipe_02 = 6.0
+-- 	--sp_pipe = 3.0
+-- 	--sp_pipe_lower = 3.0
+-- 	--sp_pipe_02 = 6.0
+-- 	--sp_pipe = 15.0
+-- 	wave2_loop = {5.0,
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["aware"] = true},
+-- 5.0,
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_upper,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_upper,
+-- ["aware"] = true},
+-- 3.0,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 6.0,
+-- ["spawnPoints"] = sp_pipe_lower,
+-- ["aware"] = true},
+-- 3.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- 6.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- 8.0,
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["aware"] = true},
+-- 6.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- 3.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 6.0,
+-- ["spawnPoints"] = sp_pipe_lower,
+-- ["aware"] = true},
+-- 3.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["aware"] = true},
+-- 6.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- 15.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 6.0,
+-- ["spawnPoints"] = sp_pipe_lower,
+-- ["aware"] = true}}
+-- 	--wave2_loop = 1.0
+-- 	wave2 = {5.0,
+-- networkFunctions.WeirdboySecondActSpawnInSafe,
+-- {["unitAmount"] = 1.0},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["capturePoint"] = mkr_capture_01,
+-- ["awardPoints"] = 2000.0,
+-- ["waveBlocker"] = true,
+-- ["loopingSpawns"] = wave2_loop,
+-- ["duration"] = 60.0,
+-- ["timeLimit"] = 180.0,
+-- ["loseAfterTimeOut"] = true},
+-- 1.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true}}
+-- 	challengeSet2 = {{["challengeType"] = ch_speedKill,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 15.0},
+-- {["challengeType"] = ch_selectiveKill,
+-- ["timeLimit"] = 25.0,
+-- ["targetAmount"] = 20.0,
+-- ["unitType"] = cp_ork_boy_melee},
+-- {["challengeType"] = ch_kingOfTheHill,
+-- ["timeLimit"] = 15.0,
+-- ["markers"] = {mkr_challengeCP_01},
+-- ["captureTime"] = 2.0},
+-- {["challengeType"] = ch_ballHog,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 8.0},
+-- {["challengeType"] = ch_sychronizedKill,
+-- ["timeLimit"] = 25.0,
+-- ["targetAmount"] = 12.0}}
+-- 	--sp_ground_18 = 15.0
+-- 	--sp_pipe_05 = 10.0
+-- 	--sp_ledge_03 = 10.0
+-- 	--sp_ledge_03 = 15.0
+-- 	--sp_ledge_03 = 15.0
+-- 	wave3_loop = {5.0,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_ground_04,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_ground_03,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_ground_16,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_ledge_16,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_ground_18,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 15.0,
+-- {["ebp"] = cp_ork_hardboy,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_hardboy,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 10.0,
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ground_04,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ground_16,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ground_18,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge_15,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge_16,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge_03,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 10.0,
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_14,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_15,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_03,
+-- ["aware"] = true},
+-- 15.0,
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_14,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_15,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_03,
+-- ["aware"] = true},
+-- 15.0}
+-- 	--wave3_loop = 1.0
+-- 	--challengeSet2 = 2.0
+-- 	--sp_pipe = 2.0
+-- 	wave3 = {5.0,
+-- {["unitAmount"] = 1.0},
+-- networkFunctions.WeirdboyThirdActSpawnInSafe,
+-- {["capturePoint"] = mkr_capture_wave_3,
+-- ["awardPoints"] = 2500.0,
+-- ["waveBlocker"] = true,
+-- ["loopingSpawns"] = wave3_loop,
+-- ["duration"] = 60.0,
+-- ["timeLimit"] = 180.0,
+-- ["loseAfterTimeOut"] = true},
+-- 1.0,
+-- {["challenge"] = challengeSet2,
+-- ["bonusPoints"] = 2500.0},
+-- 2.0,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe,
+-- ["aware"] = true},
+-- 2.0}
+-- 	--sp_pipe_03 = 5.0
+-- 	--mkr_pedestal_dest = 10.0
+-- 	--sp_wave1_01 = 12.0
+-- 	--sp_wave1_01 = 20.0
+-- 	wave4_loop = {4.0,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 7.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 7.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true},
+-- 5.0,
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["goto"] = mkr_recess_dest_02,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["goto"] = mkr_pedestal_dest,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["goto"] = mkr_pedestal_dest,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["goto"] = mkr_ledge_dest_02,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["goto"] = mkr_pedestal_dest,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["goto"] = mkr_pedestal_dest,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["goto"] = mkr_ledge_dest_01,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_shoota_pro,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["goto"] = mkr_pedestal_dest,
+-- ["aware"] = true},
+-- 10.0,
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_06,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 7.0,
+-- ["spawnPoints"] = sp_pipe_06,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 7.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["goto"] = mkr_pedestal_dest,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_entrance_pipe,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 4.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 12.0,
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_06,
+-- ["aware"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_wave1_01,
+-- ["aware"] = true,
+-- ["spawnFX"] = true},
+-- 20.0}
+-- 	wave4 = {5.0,
+-- networkFunctions.WeirdboyFourthActSpawnInSafe,
+-- {["unitAmount"] = 1.0},
+-- {["capturePoint"] = {mkr_capture_02_low, mkr_capture_02_high},
+-- ["awardPoints"] = 2000.0,
+-- ["waveBlocker"] = true,
+-- ["loopingSpawns"] = wave4_loop,
+-- ["duration"] = 60.0,
+-- ["timeLimit"] = 120.0,
+-- ["loseAfterTimeOut"] = true},
+-- 1.0,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true}}
+
+-- 	challengeSet3 = {{["challengeType"] = ch_speedKill,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 10.0},
+-- {["challengeType"] = ch_selectiveKill,
+-- ["timeLimit"] = 25.0,
+-- ["targetAmount"] = 3.0,
+-- ["unitType"] = cp_ork_nob_melee},
+-- {["challengeType"] = ch_kingOfTheHill,
+-- ["timeLimit"] = 10.0,
+-- ["markers"] = {mkr_challengeCP_03},
+-- ["captureTime"] = 2.0},
+-- {["challengeType"] = ch_ballHog,
+-- ["timeLimit"] = 20.0,
+-- ["targetAmount"] = 8.0}}
+-- 	--sp_pipe_03 = 2.0
+-- 	--cp_ork_boy_melee_pro = 2.0
+-- 	--cp_ork_boy_melee_pro = 2.0
+-- 	--cp_ork_boy_melee_pro = 3.0
+-- 	--cp_ork_boy_melee_pro = 3.0
+-- 	--cp_ork_boy_melee_pro = 3.0
+-- 	--cp_ork_boy_melee_pro = 3.0
+-- 	--cp_ork_boy_melee_pro = 3.0
+-- 	--sp_wave1_01 = 15.0
+-- 	--sp_wave1_01 = 5.0
+-- 	--cp_ork_hardboy = 2.0
+-- 	--sp_wave1_01 = "grp_weirdboyHelp"
+-- 	-- cp_ork_hardboy = 2.0
+-- 	-- cp_ork_hardboy = 2.0
+-- 	-- cp_ork_boy_ranged_grenade = 2.0
+-- 	-- sp_pipe_upper = "grp_weirdboyHelp"
+-- 	-- cp_ork_boy_ranged_grenade = 3.0
+-- 	-- cp_ork_nob_shoota = 1.0
+-- 	-- cp_ork_nob_shoota = 1.0
+-- 	-- cp_ork_squig_bomb = 3.0
+-- 	-- cp_ork_squig_bomb = 3.0
+-- 	-- cp_ork_squig_bomb = 3.0
+-- 	-- cp_ork_squig_bomb = 3.0
+-- 	-- cp_ork_boy_melee = 5.0
+-- 	-- sp_pipe_03 = "grp_weirdboyHelp"
+-- 	-- cp_ork_boy_melee = 8.0
+-- 	-- cp_ork_nob_melee = 1.0
+-- 	-- cp_ork_nob_melee = 2.0
+-- 	-- cp_ork_nob_melee = 1.0
+-- 	--challengeSet3 = 2500.0
+-- 	-- cp_ork_boy_ranged = 3.0
+-- 	-- cp_ork_boy_ranged_pro = 3.0
+-- 	-- cp_ork_nob_shoota_pro = 2.0
+-- 	-- cp_ork_boy_ranged = 3.0
+-- 	-- cp_ork_boy_ranged_pro = 3.0
+-- 	-- cp_ork_nob_shoota_pro = 2.0
+-- 	-- sp_wave1_01 = "grp_weirdboyHelp"
+-- 	-- cp_ork_nob_shoota = 1.0
+-- 	-- cp_ork_nob_shoota = 1.0
+-- 	-- cp_ork_boy_ranged = 2.0
+-- 	-- cp_ork_boy_ranged_pro = 1.0
+-- 	-- cp_ork_boy_ranged = 2.0
+-- 	-- cp_ork_boy_ranged_pro = 1.0
+-- 	-- cp_ork_boy_ranged = 2.0
+-- 	-- cp_ork_boy_ranged_pro = 1.0
+-- 	-- cp_ork_nob_shoota = 3.0
+-- 	-- cp_ork_nob_shoota_pro = 3.0
+-- 	-- cp_ork_boy_melee_pro = 3.0
+-- 	-- cp_ork_boy_melee_pro = 2.0
+-- 	-- cp_ork_boy_melee_pro = 2.0
+-- 	-- cp_ork_boy_melee_pro = 2.0
+-- 	-- cp_ork_boy_melee_pro = 3.0
+-- 	-- cp_ork_boy_melee_pro = 3.0
+-- 	-- cp_ork_boy_melee_pro = 2.0
+-- 	wave5 = {6.0,
+-- {["ebp"] = cp_ork_weirdboy,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = mkr_spawnPoint,
+-- ["aware"] = true,
+-- ["spawnFX"] = true,
+-- ["groups"] = {"grp_weirdboy"}},
+-- networkFunctions.WeirdboyLastActInstaInvul,
+-- 1.0,
+-- networkFunctions.WeirdboyLastActDisappear,
+-- 3.0,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_entrance_pipe,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 3.0,
+-- networkFunctions.TeleportWeirdboyLastActSpawn01,
+-- 2.0,
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_entrance_pipe,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["goto"] = mkr_stairs_floor_left,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["goto"] = mkr_stairs_floor_middle,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["goto"] = mkr_stairs_floor_middle,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 3.0,
+-- networkFunctions.TeleportWeirdboyLastActSpawn02,
+-- 2.0,
+-- networkFunctions.ShowWayBackRight,
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["goto"] = mkr_recess_high,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["goto"] = mkr_recess_low,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["goto"] = mkr_recess_high,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["goto"] = mkr_recess_low,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- networkFunctions.StopShowWayRight,
+-- {["leftAlive"] = 15.0},
+-- 5.0,
+-- networkFunctions.TeleportWeirdboyLastActSpawn03,
+-- 2.0,
+-- {["ebp"] = cp_ork_hardboy,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_hardboy,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 3.0,
+-- {["ebp"] = cp_ork_hardboy,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 2.0,
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged_grenade,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_05,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["leftAlive"] = 15.0},
+-- 5.0,
+-- networkFunctions.ShowWayRight,
+-- networkFunctions.ShowWayRight02,
+-- networkFunctions.ShowWayLeft,
+-- networkFunctions.ShowWayBackLeft,
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_01,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_02,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_squig_bomb,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- networkFunctions.StopShowWayRight,
+-- networkFunctions.StopShowWayRight02,
+-- networkFunctions.StopShowWayLeft,
+-- networkFunctions.StopShowWayBackLeft,
+-- {["leftAlive"] = 15.0},
+-- 2.0,
+-- networkFunctions.ShowWayDownLeft,
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 5.0,
+-- ["spawnPoints"] = sp_pipe_06,
+-- ["goto"] = mkr_tunnel_left,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee,
+-- ["unitAmount"] = 8.0,
+-- ["spawnPoints"] = sp_pipe_06,
+-- ["goto"] = mkr_tunnel_right,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 2.0,
+-- networkFunctions.StopShowWayDownLeft,
+-- 1.0,
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_04,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_08,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_melee,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_entrance_pipe,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 2.0,
+-- {["challenge"] = challengeSet3,
+-- ["bonusPoints"] = 2500.0},
+-- {["leftAlive"] = 15.0},
+-- networkFunctions.ShowWayLeft,
+-- networkFunctions.ShowWayBackLeft,
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_03,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_pipe_07,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- networkFunctions.StopShowWayLeft,
+-- networkFunctions.StopShowWayBackLeft,
+-- {["leftAlive"] = 4.0},
+-- networkFunctions.TeleportWeirdboy,
+-- 1.0,
+-- networkFunctions.CheckDeath,
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ground_19,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ground_19,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ground_17,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ground_17,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- {["ebp"] = cp_ork_boy_ranged,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge_16,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_ranged_pro,
+-- ["unitAmount"] = 1.0,
+-- ["spawnPoints"] = sp_ledge_16,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- {["ebp"] = cp_ork_nob_shoota,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ground,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_nob_shoota_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ground,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ground,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ground,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- 1.0,
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ledge,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 3.0,
+-- ["spawnPoints"] = sp_ledge,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}},
+-- {["ebp"] = cp_ork_boy_melee_pro,
+-- ["unitAmount"] = 2.0,
+-- ["spawnPoints"] = sp_ledge,
+-- ["spawnFX"] = true,
+-- ["aware"] = true,
+-- ["spawnFx"] = true,
+-- ["groups"] = {"grp_weirdboyHelp"}}
+-- }
+-- 	COOP_RegisterWaves(wave5) --wave1, wave2, wave3, wave4, 
+-- end
+
+-- function MissionStart() --f_24
+-- 	grp_dropship = Group_Create("grp_dropship")
+-- 	grp_weirdboyHelp = Group_Create("grp_weirdboyHelp")
+-- 	grp_weirdboy = Group_Create("grp_weirdboy")
+-- 	Group_SetInvulnerable(grp_dropship, true)
+-- 	COOP_StartWaves(trig_startArena)
+-- 	RegisterPlayerEvents()
+-- end
+
+-- function MissionComplete() --f_25
+
+-- end
+
+-- function OnCleanup() --f_26
+
+-- end
+
+-- function Weirdboy_TeleportToPoint(arg0, arg1, arg2) --f_15
+-- 	local var0 = Group_IsStunned(arg0, ANY)
+-- 	if var0 == false then
+-- 		local var1 = Group_IsAnimAttached(arg0, ANY)
+-- 		if var1 == false then
+-- 			local var2 = Group_Create("")
+-- 			Group_SpawnEntities(var2, "ebps\\race_ork\\fx\\weirdboy_teleport_in_proxy", arg1, 1.0)
+-- 			multiplayer.assets.weirdboyTable.deco = arg2
+-- 			multiplayer.assets.weirdboyTable.group = arg0
+-- 			multiplayer.assets.weirdboyTable.location = arg1
+-- 			Event_AddTimerWithData(networkFunctions.Weirdboy_TeleportToPoint_Part2, 1.2000000476837158, ONESHOT, multiplayer.assets.weirdboyTable)
+-- 		end
+-- 	end
+-- end
+
+-- networkFunctions.WeirdboyFirstActSpawnIn = function () --f_1
+-- 	Group_SpawnEntities(grp_weirdboy, cp_ork_weirdboy.bp, mkr_weirdboy_06, 1.0)
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_04, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyFirstActDisappear, 4.0, false)
+-- 	Group_SetInvulnerable(grp_weirdboy, true)
+-- end
+
+-- networkFunctions.WeirdboyFirstActDisappear = function () --f_2
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_06, false)
+-- 	Event_AddTimer(networkFunctions.WeirdboyFirstActKill, 4.0, false)
+-- end
+
+-- networkFunctions.WeirdboySecondActSpawnInSafe = function ()
+-- 	local status, err = pcall(networkFunctions.WeirdboySecondActSpawnIn)
+-- 	if (status) then
+-- 	else
+-- 			--print(err)
+-- 			Hud_ShowText(LOCAL, err, "", 5.0) --os == nil and 'true' or 'false'
+-- 	end
+-- end
+
+-- networkFunctions.WeirdboySecondActSpawnIn = function () --f_3	
+-- 	Group_SpawnEntities(grp_weirdboy, cp_ork_weirdboy.bp, mkr_weirdboy_06, 1.0)
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_05, true)
+-- 	Group_SetInvulnerable(grp_weirdboy, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyFirstActDisappear, 3.0, false)
+-- end
+
+-- networkFunctions.WeirdboyThirdActSpawnInSafe = function ()
+-- 	local status, err = pcall(networkFunctions.WeirdboyThirdActSpawnIn)
+-- 	if (status) then
+-- 	else
+-- 			--print(err)
+-- 			Hud_ShowText(LOCAL, err, "", 5.0) --os == nil and 'true' or 'false'
+-- 	end
+-- end
+
+-- networkFunctions.WeirdboyThirdActSpawnIn = function () --f_4
+-- 	Group_SpawnEntities(grp_weirdboy, cp_ork_weirdboy.bp, mkr_weirdboy_06, 1.0)
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_03, true)
+-- 	Group_SetInvulnerable(grp_weirdboy, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyFirstActDisappear, 3.0, false)
+-- end
+
+-- networkFunctions.WeirdboyFourthActSpawnInSafe = function ()
+-- 	local status, err = pcall(networkFunctions.WeirdboyFourthActSpawnIn)
+-- 	if (status) then
+-- 	else
+-- 			--print(err)
+-- 			Hud_ShowText(LOCAL, err, "", 5.0) --os == nil and 'true' or 'false'
+-- 	end
+-- end
+
+-- networkFunctions.WeirdboyFourthActSpawnIn = function () --f_5
+-- 	Group_SpawnEntities(grp_weirdboy, cp_ork_weirdboy.bp, mkr_weirdboy_06, 1.0)
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_02, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyFirstActDisappear, 3.0, false)
+-- 	Group_SetInvulnerable(grp_weirdboy, true)
+-- end
+
+-- networkFunctions.WeirdboyFirstActKill = function () --f_6
+-- 	Group_Kill(grp_weirdboy)
+-- end
+
+-- networkFunctions.TeleportWeirdboyLastActSpawn01 = function () --f_7
+-- 	Group_SetInvulnerable(grp_weirdboy, true)
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_stairs_floor_middle, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyLastActDisappear, 3.0, false)
+-- end
+
+-- networkFunctions.WeirdboyLastActInstaInvul = function ()
+-- 	Group_SetInvulnerable(grp_weirdboy, true)
+-- end
+
+-- networkFunctions.WeirdboyLastActDisappear = function () --f_8
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_06, false)
+-- end
+
+-- networkFunctions.TeleportWeirdboyLastActSpawn02 = function () --f_9
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_05, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyLastActDisappear, 3.0, false)
+-- end
+
+-- networkFunctions.TeleportWeirdboyLastActSpawn03 = function () --f_10
+-- 	Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_04, true)
+-- 	Event_AddTimer(networkFunctions.WeirdboyLastActDisappear, 3.0, false)
+-- end
+
+-- networkFunctions.TeleportWeirdboy = function () --f_11
+-- 	Group_SetInvulnerable(grp_weirdboy, 0.0)
+-- 	Event_AddTimer(networkFunctions.TeleportWeirdboyAround, 8.0, true)
+-- end
+
+-- networkFunctions.CheckDeath = function () --f_12
+-- 	multiplayer.assets.weirdboyDeathTable.group = grp_weirdboy
+-- 	Event_AddTimerWithData(networkFunctions.CheckDeathWeirdboy, 2.0, true, multiplayer.assets.weirdboyDeathTable)
+-- end
+
+-- networkFunctions.CheckDeathWeirdboy = function (arg0, arg1) --f_13
+-- 	local var0 = Group_Count(arg1.group)
+-- 	if var0 <= 0.0 then
+-- 		Group_Kill(grp_weirdboyHelp)
+-- 		if weirdboyDeco ~= nil then
+-- 			UI_RemoveDecorator(weirdboyDeco)
+-- 			weirdboyDeco = nil
+-- 		end
+-- 	end
+-- end
+
+-- networkFunctions.TeleportWeirdboyAround = function (arg0) --f_14
+-- 	local var0 = Group_Count(grp_weirdboy)
+-- 	if 0.0 < var0 then
+-- 		local var1 = Util_GetRandomNumber(1.0, 5.0)
+-- 		if var1 == 1.0 then
+-- 			Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_01, true)
+-- 		end
+-- 		if var1 == 2.0 then
+-- 			Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_02, true)
+-- 		end
+-- 		if var1 == 3.0 then
+-- 			Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_03, true)
+-- 		end
+-- 		if var1 == 4.0 then
+-- 			Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_04, true)
+-- 		end
+-- 		Weirdboy_TeleportToPoint(grp_weirdboy, mkr_weirdboy_05, true)
+-- 	end
+-- 	Event_Remove(arg0)
+-- end
+
+-- networkFunctions.Weirdboy_TeleportToPoint_Part2 = function (arg0, arg1) --f_16
+-- 	local var0 = Group_IsStunned(arg1.group, ANY)
+-- 	if var0 == false then
+-- 		local var1 = Group_IsAnimAttached(arg1.group, ANY)
+-- 		if var1 == false then
+-- 			Group_TriggerAnimationEvent(arg1.group, "EVT_TeleportOut")
+-- 			Event_AddTimerWithData(networkFunctions.Weirdboy_PlayteleportAwayFX, 0.800000011920929, ONESHOT, arg1)
+-- 			Event_AddTimerWithData(networkFunctions.Weirdboy_TeleportToPoint_Part3, 0.8999999761581421, ONESHOT, arg1)
+-- 			if weirdboyDeco ~= nil then
+-- 				UI_RemoveDecorator(weirdboyDeco)
+-- 				weirdboyDeco = nil
+-- 				--UNHANDLED JUMP (PC += 0 [62])
+-- 			end
+-- 		end
+-- 	end
+-- end
+
+-- networkFunctions.Weirdboy_TeleportToPoint_Part3 = function (arg0, arg1) --f_17
+-- 	local var0 = Group_Count(arg1.group)
+-- 	if 0.0 < var0 then
+-- 		Entity_ResetAnimationGraph(Group_GetEntityAt(arg1.group, 1.0))
+-- 	end
+-- 	Group_WarpToPosition(arg1.group, arg1.location)
+-- 	if arg1.deco == true then
+-- 		local var1 = Util_GetPosition(arg1.location)
+-- 		var1.z = var1.z + 2.0
+-- 		weirdboyDeco = UI_ShowDecoratorLocal(var1, POI_ATTACK)
+-- 	end
+-- 	Group_TriggerAnimationEvent(arg1.group, "EVT_TeleportIn")
+-- 	Cmd_HoldGround(arg1.group, arg1.location)
+-- end
+
+-- networkFunctions.Weirdboy_PlayteleportAwayFX = function (arg0, arg1) --f_18
+-- 	Group_StartEntityAction(arg1.group, "Teleport_Out")
+-- end
+
+-- networkFunctions.SpawnDropship = function () --f_19
+-- 	Group_SpawnEntities(grp_dropship, cp_ork_dropship.bp, mkr_Dropship_Destination, 1.0)
+-- 	Group_TriggerAnimationEvent(grp_dropship, "EVT_Dropship_Enter")
+-- 	Event_AddTimer(networkFunctions.DropshipPlayIdle, 9.0, ONESHOT)
+-- end
+
+-- networkFunctions.DropshipPlayIdle = function () --f_20
+-- 	Group_TriggerAnimationEvent(grp_dropship, "EVT_Dropship_Idle")
+-- 	multiplayer.assets.dropshipSpawn = Event_AddTimer(networkFunctions.DropshipSpawn, 1.5, true)
+-- 	Event_AddTimer(networkFunctions.DropshipPlayExit, 9.0, ONESHOT)
+-- end
+
+-- networkFunctions.DropshipSpawn = function () --f_21
+-- 	local var0 = Group_GetEntityAt(grp_dropship, 1.0)
+-- 	local entity = Group_SpawnAtEntityMarker(multiplayer.assets.grp_currentWave, cp_ork_boy_melee_pro.bp, var0, "MKR_Ork_bottom_01")
+-- 	Entity_TriggerAnimationEvent(entity, "MakeUpright")
+-- end
+
+-- networkFunctions.DropshipPlayExit = function () --f_22
+-- 	Event_Remove(multiplayer.assets.dropshipSpawn)
+-- 	Group_TriggerAnimationEvent(grp_dropship, "EVT_Dropship_Exit")
+-- 	Event_AddTimer(networkFunctions.DropshipDespawn, 10.0, ONESHOT)
+-- end
+
+-- networkFunctions.DropshipDespawn = function () --f_23
+-- 	Group_DespawnEntities(grp_dropship)
+-- end
+
+-- networkFunctions.ShowWayLeft = function () --f_27
+-- 	Marker_PlayFX(mkr_explosionWay_01_Left)
+-- end
+
+-- networkFunctions.StopShowWayLeft = function () --f_28
+-- 	Marker_StopFX(mkr_explosionWay_01_Left)
+-- end
+
+-- networkFunctions.ShowWayRight = function () --f_29
+-- 	Marker_PlayFX(mkr_explosionWay_01_Right)
+-- end
+
+-- networkFunctions.StopShowWayRight = function () --f_30
+-- 	Marker_StopFX(mkr_explosionWay_01_Right)
+-- end
+
+-- networkFunctions.ShowWayBack01 = function () --f_31
+-- 	Marker_PlayFX(mkr_explosionWay_01_Back)
+-- end
+-- networkFunctions.StopShowWayBack01 = function () --f_32
+-- 	Marker_StopFX(mkr_explosionWay_01_Back)
+-- end
+
+-- networkFunctions.ShowWayBackRight = function () --f_33
+-- 	Marker_PlayFX(mkr_explosionWay_01_BackRight)
+-- end
+
+-- networkFunctions.StopShowWayBackRight = function () --f_34
+-- 	Marker_StopFX(mkr_explosionWay_01_BackRight)
+-- end
+
+-- networkFunctions.ShowWayBackLeft = function () --f_35
+-- 	Marker_PlayFX(mkr_explosionWay_01_BackLeft)
+-- end
+
+-- networkFunctions.StopShowWayBackLeft = function () --f_36
+-- 	Marker_StopFX(mkr_explosionWay_01_BackLeft)
+-- end
+
+-- networkFunctions.ShowWayRight02 = function () --f_37
+-- 	Marker_PlayFX(mkr_explosionWay_02_Right)
+-- end
+
+-- networkFunctions.StopShowWayRight02 = function () --f_38
+-- 	Marker_StopFX(mkr_explosionWay_02_Right)
+-- end
+
+-- networkFunctions.ShowWayDownLeft = function () --f_39
+-- 	Marker_PlayFX(mkr_explosionWay_01_DownLeft)
+-- end
+
+-- networkFunctions.StopShowWayDownLeft = function () --f_40
+-- 	Marker_StopFX(mkr_explosionWay_01_DownLeft)
+-- end

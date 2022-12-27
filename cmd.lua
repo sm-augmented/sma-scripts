@@ -1,0 +1,1 @@
+Cmd_Follow(multiplayer.assets.grp_currentWave, Player_GetGroupHuman(), false, 0.0, 1.5, false)

@@ -1,0 +1,10 @@
+local var3 = Util_GetPosition(mkr_dread_04)
+gpTitan = Group_Create("titan")
+Group_SpawnEntities(gpTitan, "ebps\\props\\titan_scale_vista", mkr_dread_04, 1.0)
+var2 = Group_GetEntityAt(gpTitan, 1)
+var4 = POS(var3.x - 150, var3.y - 150, var3.z)
+Entity_SetPosition(var2, var4)
+
+--Group_TriggerAnimationEvent(gpTitan, "TIT_Activate")
+--Group_TriggerAnimationEvent(gpTitan, "TIT_Walk")
+--Group_TriggerAnimationEvent(gpTitan, "TIT_Stop")
